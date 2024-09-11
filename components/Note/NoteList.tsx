@@ -1,18 +1,21 @@
 import { Container } from '@mantine/core'
+import next from 'next'
 import React from 'react'
 
 export const revalidate = 20
 
 const NoteList = async () => {
-    const data = await fetch('http://localhost:3000/api/note?count=1&query=qwe')
+    const data = await fetch('http://localhost:3000/api/note?count=1&query=qwe', {next: {tags: ['note']}})
     const j = await data.json()
-    const notes = j.res
+    let notes = []
+    if(j.ok){
+        notes = j.res
+    }
   return (
         <Container>
-            {notes && notes.length}
-            {notes && notes.map((item: any) => 
+            {notes.length && notes.map((item: any, index: number) => 
                 (
-                    <div key={item.id}>
+                    <div key={item._id + index + ''}>
                         {item.title}
                     </div>
                 )
