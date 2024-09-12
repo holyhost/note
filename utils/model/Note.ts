@@ -1,9 +1,7 @@
 import { models, model, now, Schema } from "mongoose";
 
 
-
-
-const Note = models.Note ||  model('note', new Schema({
+const NoteSchema = new Schema({
     author: String,
     title: String,
     content: String,
@@ -11,6 +9,8 @@ const Note = models.Note ||  model('note', new Schema({
     utime: {type: Date, default: Date,now},
     type: {type: Number, default: 1},
     view: Number
-}))
+})
+
+const Note = models.Note ||  model('Note', NoteSchema)
 
 export default Note
