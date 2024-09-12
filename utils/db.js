@@ -16,7 +16,7 @@ import mongoose from "mongoose";
 
 var isConnected = false
 
-export async function appDB(){
+export async function connectDB(){
     if(isConnected) {
         console.log("db already connected.")
         return isConnected}
