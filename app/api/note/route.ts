@@ -1,18 +1,21 @@
 import { connectDB } from "@/utils/db"
-import Note from "@/utils/model/Note"
+import Note, { NoteModel } from "@/utils/model/Note"
 import { revalidateTag } from "next/cache"
 import { NextRequest } from "next/server"
 
 
 export async function GET(params:NextRequest) {
-    const aa = params.nextUrl.searchParams
+    const sp = params.nextUrl.searchParams
+    const page = (sp.get('page') || 1) as number
+    const count = (sp.get('count')  || 6) as number
     const conn = await connectDB()
     if(!conn) return Response.json({ok: false})
-    const result = await Note.find({})
+    const result = await Note.find({type: {$gte: 1}}).sort({utime: -1}).limit(count).skip(page * count)
     const data = {
         ok: true,
-        res: result
+        res: result.map(item => ({...item._doc, content: item._doc.content.slice(0, 399)}))
     }
+    console.log(data)
     return Response.json(data)
 }
 
