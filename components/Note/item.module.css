@@ -1,0 +1,50 @@
+
+.container {
+    position:relative;
+    display: flex;
+    flex-direction: column;
+    background: rgba(130, 201, 30, 0.07);
+    padding: 26px 25px;
+    border-radius: 0px 6px 6px 0px;
+    margin: 20px 8px 2px 8px;
+    /* height: 11rem; */
+    border-left: 3px solid limegreen;
+    /* color: white; */
+}
+
+.anchor {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    width: 3rem;
+    top: -1.5rem;
+    left: -1.5rem;
+    background-color: white;
+    border-radius: 3rem;
+    color: #82c91e;
+}
+
+.title {
+    font-size: 24px;
+}
+
+.content{
+    /* flex: 1; */
+    /* max-height: 3.4rem; */
+}
+
+.author {
+    margin-right: 1rem;
+}
+
+.footer{
+    margin-top: 1rem;
+    display: inline-block;
+    color: #838383;
+    font-style: italic;
+    font-size: 80%;
+    word-spacing: 2px;
+    letter-spacing: 2px;
+}
