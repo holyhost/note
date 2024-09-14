@@ -4,6 +4,8 @@ import React from 'react';
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import { theme } from '../theme';
 import '@/styles/global.css'
+import { Welcome } from '@/components/Welcome/Welcome';
+import AppHeader from '@/components/AppHeader/AppHeader';
 
 export const metadata = {
   title: 'Note',
@@ -22,7 +24,9 @@ export default function RootLayout({ children }: { children: any }) {
         />
       </head>
       <body>
-        <MantineProvider theme={theme}>{children}</MantineProvider>
+        <MantineProvider theme={theme}>
+          <AppHeader/>
+          {children}</MantineProvider>
       </body>
     </html>
   );
