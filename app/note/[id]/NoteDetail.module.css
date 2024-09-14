@@ -1,0 +1,12 @@
+
+.container {
+    padding: 10px 15px;
+}
+
+.subContainer {
+    background-color: #d2d9d7;
+    margin: 20px 0px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    min-height: 10rem;
+}
