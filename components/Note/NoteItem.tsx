@@ -8,8 +8,6 @@ import { NoteModel } from '@/utils/model/Note'
 const NoteItem = ({data}: {data: NoteModel}) => {
   console.log(data.utime)
   data.utime = new Date(data.utime + '')
-  console.log(typeof data.utime)
-  console.log(data.utime.toLocaleDateString())
   const updateTime = data.utime?.toLocaleDateString() || ''
   // const updateTime = ''
   return (

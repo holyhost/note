@@ -15,7 +15,6 @@ export async function GET(params:NextRequest) {
         ok: true,
         res: result.map(item => ({...item._doc, content: item._doc.content.slice(0, 399)}))
     }
-    console.log(data)
     return Response.json(data)
 }
 
