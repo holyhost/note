@@ -1,12 +1,13 @@
-import { Blockquote, Container, Text } from '@mantine/core'
-import next from 'next'
+import { Container, Text } from '@mantine/core'
 import React from 'react'
 import NoteItem from './NoteItem'
+import { getDomain } from '@/utils/base'
 
-export const revalidate = 20
+// export const revalidate = 20
 
 const NoteList = async () => {
-    const data = await fetch('http://localhost:3000/api/note?count=3&page=2', {next: {tags: ['note']}})
+    const url = getDomain()
+    const data = await fetch(url + '/api/note', {next: {tags: ['note']}})
     const j = await data.json()
     let notes = []
     if(j.ok){
