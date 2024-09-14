@@ -48,3 +48,21 @@
     word-spacing: 2px;
     letter-spacing: 2px;
 }
+
+.detail {
+    position:absolute;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border: 50px solid red;
+    border-color: red transparent transparent red;
+}
+.detail-text {
+    position:absolute;
+    right: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    color: white;
+}

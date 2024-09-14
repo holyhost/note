@@ -1,8 +1,8 @@
 
 import React from 'react'
 import classes from './item.module.css'
-import { Text } from '@mantine/core'
-import { IconAlertCircle, IconEye } from '@tabler/icons-react'
+import { Anchor, Group, Text } from '@mantine/core'
+import { IconAlertCircle, IconCalendar, IconEye } from '@tabler/icons-react'
 import { NoteModel } from '@/utils/model/Note'
 
 const NoteItem = ({data}: {data: NoteModel}) => {
@@ -19,11 +19,16 @@ const NoteItem = ({data}: {data: NoteModel}) => {
         <div className={classes.content}>
             {data.content}
         </div>
-        <div className={classes.footer}>
-            <span className={classes.author}>-- {data.author}</span> 
-            {data.view && <span ><IconEye size={'12px'}/>{data.view}</span>}
-            <span>{updateTime}</span>
-        </div>
+        <Group justify='space-between'>
+          <div className={classes.footer}>
+              <span className={classes.author}>-- {data.author}</span> 
+              {data.view && <span ><IconEye size={'12px'}/>{data.view}</span>}
+              <span><IconCalendar color='teal' size={'12px'}/> {updateTime}</span>
+          </div>
+          <Text><Anchor href={`/note/${data._id}`}>查看详情 {">>"}</Anchor></Text>
+        </Group>
+        
+        {/* <div className={classes.detail}></div> */}
     </div>
   )
 }
