@@ -5,7 +5,7 @@ import { IconAlertCircle, IconHome, IconPaint, IconPencil, IconPlus } from '@tab
 export function Welcome() {
   return (
     <>
-      <Title className={classes.title} ta="center" mt={100}>
+      <Title className={classes.title} ta="center" mt={30}>
         Welcome to{' '}
         <Text inherit variant="gradient" component="span" gradient={{ from: 'pink', to: 'yellow' }}>
           Note
@@ -18,7 +18,7 @@ export function Welcome() {
           <Button size='md' bg={'yellow'} c='white' leftSection={<IconAlertCircle/>} className='bdr-20' component='a' href='/about'>关于</Button>
       </Group>
       <Text c="teal" ta="center" size="lg" maw={580} mx="auto" mt="md">
-        欲买桂花同载酒，终不似，少年游。
+        潭中鱼可百许头，皆若空游无所依。
       </Text>
     </>
   );
