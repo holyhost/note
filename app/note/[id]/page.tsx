@@ -4,6 +4,28 @@ import { NoteModel } from '@/utils/model/Note'
 import { Avatar, Center, Container, Text, Group } from '@mantine/core'
 import React from 'react'
 import classes from './NoteDetail.module.css'
+import { Metadata } from 'next'
+
+
+
+type Props = {
+  params: { id: string }
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+ 
+export async function generateMetadata(
+  { params, searchParams }: Props
+): Promise<Metadata> {
+  // read route params
+  const id = params.id
+  // fetch data
+  const note = await getNoteDetail(id)
+ 
+  return {
+    title: note?.title || id,
+    description: note?.content.slice(0, 88) || ''
+  }
+}
 
 // Next.js will invalidate the cache when a
 // request comes in, at most once every 60 seconds.
@@ -16,7 +38,6 @@ export const dynamicParams = true // or false, to 404 on unknown paths
  
 export async function generateStaticParams() {
   const domain = getDomain()
-  console.log(domain)
   const data: ResType<NoteModel[]> = await fetch(domain + "/api/note?page=1&count=10").then((res) => res.json())
   const ids = data.res.map((post) => ({id: post._id}))
   return ids
@@ -26,7 +47,6 @@ const getNoteDetail = async (id: string) => {
   const domain = getDomain()
   const data: ResType<NoteModel> = await fetch(domain + "/api/note/"+id).then((res) => res.json())
   if(data.ok && data.res){
-    console.log(data.res)
     return data.res
   }else{
     return null
