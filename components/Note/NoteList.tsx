@@ -24,7 +24,6 @@ const NoteList = ({ notes, more = false }: Props) => {
 
     const loadMoreNotes = async ()=> {
         const apiNotes = await getNoteList(page)
-        console.log(apiNotes[0].content)
         if(!apiNotes || apiNotes.length < PAGE_COUNT){
             setEnd(true)
         }
