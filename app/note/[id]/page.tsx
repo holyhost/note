@@ -72,14 +72,9 @@ const DetailPage = async ({params}: {params: {id: string}}) => {
             </div>
           </Group>
           <div className={classes.subContainer}>
-          <p>---no element--</p>
-            {note.content}
-            <p>---Text element--</p>
-            <Text>
+            <Text className={classes.textPre}>
               {note.content}
             </Text>
-            <p>---p element--</p>
-            <p>{note.content}</p>
           </div>
         </div>
       ) : (

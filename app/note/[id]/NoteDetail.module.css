@@ -10,3 +10,7 @@
     border-radius: 6px;
     min-height: 10rem;
 }
+
+.textPre {
+    white-space: pre-wrap;
+}
