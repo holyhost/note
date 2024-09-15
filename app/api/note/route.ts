@@ -25,6 +25,8 @@ export async function POST(params:Request) {
         {
             content: body.content,
             title: body.title,
+            tags: body.tags || '',
+            type: body.type || 1,
             author: 'administrator'
         }
     )
