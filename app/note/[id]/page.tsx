@@ -1,7 +1,7 @@
 import { getDomain } from '@/utils/base'
 import { ResType } from '@/utils/model/global'
 import { NoteModel } from '@/utils/model/Note'
-import { Center, Container, Text } from '@mantine/core'
+import { Avatar, Center, Container, Text, Group } from '@mantine/core'
 import React from 'react'
 import classes from './NoteDetail.module.css'
 
@@ -36,12 +36,30 @@ const getNoteDetail = async (id: string) => {
 const DetailPage = async ({params}: {params: {id: string}}) => {
     const note = await getNoteDetail(params.id)
   return (
-    <Container>
+    <Container mt={'md'}>
       {params && params.id && note ? (
         <div className={classes.container}>
           <Text fs={'italic'} fw={'bold'} size='xl' pl={'20px'}>{note.title}</Text>
+          <Group>
+            <Avatar name={note.author} />
+            <div>
+              <Text>{note.author}</Text>
+              <Text size='sm' c={'gray'}>
+                最近更新时间：{new Date(note.utime + '').toLocaleDateString()}
+                {note.view && <Text component='span' ml={20}>浏览器量：{note.view}</Text>} 
+                
+              </Text>
+            </div>
+          </Group>
           <div className={classes.subContainer}>
+          <p>---no element--</p>
             {note.content}
+            <p>---Text element--</p>
+            <Text>
+              {note.content}
+            </Text>
+            <p>---p element--</p>
+            <p>{note.content}</p>
           </div>
         </div>
       ) : (
