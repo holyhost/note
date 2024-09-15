@@ -10,7 +10,7 @@ export async function GET(params:NextRequest) {
     const count = (sp.get('count')  || 6) as number
     const conn = await connectDB()
     if(!conn) return Response.json({ok: false})
-    const result = await Note.find({type: {$gte: 1}}).sort({utime: -1}).limit(count).skip(page * count)
+    const result = await Note.find({type: {$gte: 1}}).sort({utime: -1}).limit(count).skip((page-1) * count)
     const data = {
         ok: true,
         res: result.map(item => ({...item._doc, content: item._doc.content.slice(0, 399)}))
