@@ -1,14 +1,15 @@
-import AddNote from '@/components/Note/AddNote';
 import NoteList from '@/components/Note/NoteList';
-import { ColorSchemeToggle } from '../components/ColorSchemeToggle/ColorSchemeToggle';
 import { Welcome } from '../components/Welcome/Welcome';
+import { NoteModel } from '@/utils/model/Note';
+import { getNoteList } from '@/utils/action/note.action';
 
-export default function HomePage() {
+export default async function HomePage() {
+  const initalNotes: NoteModel[] = await getNoteList()
   return (
     <>
       <Welcome />
       {/* <ColorSchemeToggle /> */}
-      <NoteList/>
+      <NoteList notes={initalNotes}/>
     </>
   );
 }
