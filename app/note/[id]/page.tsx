@@ -1,7 +1,7 @@
 import { getDomain } from '@/utils/base'
 import { ResType } from '@/utils/model/global'
 import { NoteModel } from '@/utils/model/Note'
-import { Avatar, Center, Container, Text, Group } from '@mantine/core'
+import { Avatar, Center, Container, Text, Group, Pill } from '@mantine/core'
 import React from 'react'
 import classes from './NoteDetail.module.css'
 import { Metadata } from 'next'
@@ -71,6 +71,11 @@ const DetailPage = async ({params}: {params: {id: string}}) => {
               </Text>
             </div>
           </Group>
+          {note.tags && (
+            <Group justify='end'>
+              {note.tags.split(',').map(t => <Pill c='white' bg={'teal'} size='sm'>{t}</Pill>)}
+            </Group>
+          )}
           <div className={classes.subContainer}>
             <Text className={classes.textPre}>
               {note.content}
