@@ -6,7 +6,6 @@ import { IconAlertCircle, IconCalendar, IconEye } from '@tabler/icons-react'
 import { NoteModel } from '@/utils/model/Note'
 
 const NoteItem = ({data}: {data: NoteModel}) => {
-  console.log(data.utime)
   data.utime = new Date(data.utime + '')
   const updateTime = data.utime?.toLocaleDateString() || ''
   // const updateTime = ''
