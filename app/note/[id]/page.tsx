@@ -5,6 +5,7 @@ import { Avatar, Center, Container, Text, Group, Pill } from '@mantine/core'
 import React from 'react'
 import classes from './NoteDetail.module.css'
 import { Metadata } from 'next'
+import NotePreview from '@/components/Note/NotePreview/NotePreview'
 
 
 
@@ -76,11 +77,7 @@ const DetailPage = async ({params}: {params: {id: string}}) => {
               {note.tags.split(',').map(t => <Pill c='white' bg={'teal'} size='sm'>{t}</Pill>)}
             </Group>
           )}
-          <div className={classes.subContainer}>
-            <Text className={classes.textPre}>
-              {note.content}
-            </Text>
-          </div>
+          <NotePreview data={note.content}/>
         </div>
       ) : (
         <Center>
