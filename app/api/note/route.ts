@@ -21,20 +21,27 @@ export async function GET(params:NextRequest) {
 export async function POST(params:Request) {
     const body = await params.json()
     await connectDB()
-    const bean = await Note.create(
-        {
-            content: body.content,
-            title: body.title,
-            tags: body.tags || '',
-            type: body.type || 1,
-            author: 'administrator'
-        }
-    )
-    // const id = await bean.save()
+    const bean = new Note()
+    bean.content = body.content
+    bean.title = body.title
+    bean.tags = body.tags || ''
+    bean.content = body.type || 1
+    const medias = body.medias || []
+    medias.length && (bean.medias = medias)
+    // const bean = await Note.create(
+    //     {
+    //         content: body.content,
+    //         title: body.title,
+    //         tags: body.tags || '',
+    //         type: body.type || 1,
+    //         author: 'administrator'
+    //     }
+    // )
+    const result = await bean.save()
     revalidateTag('note')
     const data = {
         ok: true,
-        data: bean
+        data: result.title
     }
     
     return Response.json(data)
