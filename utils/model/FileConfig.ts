@@ -1,25 +1,7 @@
-// import { models, model, Schema } from "mongoose";
+import { models, model, Schema } from "mongoose";
 
 export type FileDisplay  = 'center' | 'start' | 'end' | 'inline'
 
-export const FILE_DISPLAY_TYPES = [
-    {
-        label: '居中',
-        value: 'center'
-    },
-    {
-        label: '靠左',
-        value: 'start'
-    },
-    {
-        label: '靠右',
-        value: 'end'
-    },
-    {
-        label: '一行',
-        value: 'inline'
-    },
-]
 
 export interface FileConfigModel {
     _id?: string,
@@ -31,22 +13,25 @@ export interface FileConfigModel {
     type: string,
     view?: number,
     heart?: number,
+    size?: number,
     tags?: string,
     display?: string
 }
 
-// const FileConfigSchema = new Schema<FileConfigModel>({
-//     author: String,
-//     title: String,
-//     content: String,
-//     ctime: {type: Date, default: Date.now},
-//     utime: {type: Date, default: Date.now},
-//     type: String,
-//     view: Number,
-//     heart: Number,
-//     tags: String
-// })
+const FileConfigSchema = new Schema<FileConfigModel>({
+    author: String,
+    title: String,
+    content: String,
+    ctime: {type: Date, default: Date.now},
+    utime: {type: Date, default: Date.now},
+    type: String,
+    view: Number,
+    size: Number,
+    heart: Number,
+    tags: String,
+    display: String
+}, {autoCreate: true})
 
-// const FileConfig = models.FileConfig ||  model('FileConfig', FileConfigSchema)
+const FileConfig = models.FileConfig ||  model('FileConfig', FileConfigSchema)
 
-// export default FileConfig
+export default FileConfig

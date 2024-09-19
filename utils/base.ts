@@ -8,6 +8,24 @@ export interface BaseType {
     label: string,
     value: number
 }
+export const FILE_DISPLAY_TYPES = [
+    {
+        label: '居中',
+        value: 'center'
+    },
+    {
+        label: '靠左',
+        value: 'start'
+    },
+    {
+        label: '靠右',
+        value: 'end'
+    },
+    {
+        label: '一行',
+        value: 'inline'
+    },
+]
 
 export const NOTE_TAGS: string[] = ['Error', 'React', 'Vue', 'Angular', 'Python', 'Nextjs']
 

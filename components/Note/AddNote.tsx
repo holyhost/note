@@ -1,12 +1,12 @@
 "use client"
-import { NOTE_TAGS, NOTE_TYPES } from '@/utils/base'
+import { FILE_DISPLAY_TYPES, NOTE_TAGS, NOTE_TYPES } from '@/utils/base'
 import { Button, Chip, Container, FileButton, Group, MultiSelect, Pill, Select, TagsInput, Text, Textarea, TextInput } from '@mantine/core'
 import React, { useState } from 'react'
-import NoteEditor from './NoteEditor/NoteEditor'
 import NotePreview from './NotePreview/NotePreview'
 import { IconImageInPicture } from '@tabler/icons-react'
-import { FILE_DISPLAY_TYPES, FileConfigModel } from '@/utils/model/FileConfig'
+import { FileConfigModel } from '@/utils/model/FileConfig'
 import { nanoid } from 'nanoid'
+import { updateFileAction, uploadFileAction } from '@/utils/action/upfile.action'
 
 const AddNote = () => {
     const [title, setTitle] = useState('')
@@ -18,9 +18,14 @@ const AddNote = () => {
     const [uploading, setUploading] = useState(false)
     const [noteType, setNoteType] = useState(NOTE_TYPES[0].label)
     const noteTypes = NOTE_TYPES.map(item => item.label)
-    const chooseFile = (file: File | null) => {
+    const chooseFile = async(file: File | null) => {
         console.log(file)
-        file2Base64(file)
+        if(file){
+            //upload file
+            const res = await uploadFileAction(file)
+            file2Base64(file, null, res?._id)
+        }
+        
     }
     const onPaste = (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
         const items = event.clipboardData?.items
@@ -28,11 +33,15 @@ const AddNote = () => {
         const curPosition = area.selectionStart
         console.log(curPosition)
         if (items) {
-            Array.from(items).map(item => {
+            Array.from(items).map(async item => {
                 // img
                 if (item.type.includes('image')) {
                     const file = item.getAsFile()
-                    file2Base64(file, area)
+                    if(file){
+                        const res = await uploadFileAction(file)
+                        file2Base64(file, area,res?._id )
+                    }
+                    
 
                 } else {
                     console.log(item.type, item)
@@ -40,7 +49,7 @@ const AddNote = () => {
             })
         }
     }
-    const file2Base64 = (file: File | null, area: HTMLTextAreaElement|null = null)=> {
+    const file2Base64 = (file: File | null, area: HTMLTextAreaElement|null = null, mid='')=> {
         if (file) {
             let curPosition = lastCursorIndex
             area && (curPosition = area.selectionStart)
@@ -48,9 +57,9 @@ const AddNote = () => {
             const reader = new FileReader()
             reader.onloadend = () => {
                 const base64 = reader.result + ''
-                const mid = nanoid()
+                let id = mid || nanoid()
                 const imgItem: FileConfigModel = {
-                    _id: mid,
+                    _id: id,
                     author: 'administrator',
                     title: '插入了一个图片',
                     content: base64,
@@ -92,7 +101,7 @@ const AddNote = () => {
                     title, content, 
                     tags: tags.join(','), 
                     type: NOTE_TYPES.find(item => item.label === noteType)?.value || 1,
-                    medias: medias
+                    medias: medias.map(m => m._id)
                 })
             })
             const json = await res.json()
@@ -100,6 +109,11 @@ const AddNote = () => {
                 setTitle('')
                 setContent('')
             }
+            medias.length && medias.map(async m => {
+                const res = await updateFileAction(m.title, m.display, 'note')
+                if(res) return 1
+                return 0
+            })
         } catch (error) {
             console.log(error)
         }finally{
@@ -181,7 +195,6 @@ const AddNote = () => {
         <Group justify="end">
            <Button loading={uploading} mt={'1rem'} onClick={submit} bg={'teal'}>Save</Button> 
         </Group>
-        <NoteEditor/>
         <NotePreview data={content}/>
         
     </Container>

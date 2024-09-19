@@ -29,20 +29,11 @@ export async function POST(params:Request) {
     const medias = body.medias || []
     console.log(medias)
     medias.length && (bean.medias = medias)
-    // const bean = await Note.create(
-    //     {
-    //         content: body.content,
-    //         title: body.title,
-    //         tags: body.tags || '',
-    //         type: body.type || 1,
-    //         author: 'administrator'
-    //     }
-    // )
     const result = await bean.save()
     revalidateTag('note')
     const data = {
         ok: true,
-        data: result.title
+        res: result.title
     }
     
     return Response.json(data)
