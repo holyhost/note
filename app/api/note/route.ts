@@ -25,8 +25,9 @@ export async function POST(params:Request) {
     bean.content = body.content
     bean.title = body.title
     bean.tags = body.tags || ''
-    bean.content = body.type || 1
+    bean.type = body.type || 1
     const medias = body.medias || []
+    console.log(medias)
     medias.length && (bean.medias = medias)
     // const bean = await Note.create(
     //     {
