@@ -1,7 +1,10 @@
-import { Text } from '@mantine/core'
+import { Group, Image, Stack, Text } from '@mantine/core'
 import React from 'react'
 import classes from './NotePreview.module.css'
 import Code from './Code/Code'
+import { getDomain, getFileDomain } from '@/utils/base'
+import { FileConfigModel } from '@/utils/model/FileConfig'
+import { ResType } from '@/utils/model/global'
 
 const MD_H1 = '# '
 const MD_H2 = '## '
@@ -17,14 +20,34 @@ const MD_TYPES = [MD_CODE, MD_H1, MD_H2, MD_H3, MD_H4, MD_HIGHT_LIGHT, MD_BOLD, 
 const MD_ROW_TYPES = [MD_HIGHT_LIGHT]
 const whiteEle = <div className={classes.ht1}></div>
 
-const NotePreview = ({data}: {data: string}) => {
+async function getMediaDetails(ids:string[]) {
+    const fileConfigs: FileConfigModel[] = []
+    const domain = getDomain()
+    if(ids && ids.length){
+        for (let index = 0; index < ids.length; index++) {
+            const id = ids[index];
+            console.log(id, 'will get file detail')
+            const res = await fetch(domain + "/api/file/"+id)
+            const data: ResType<FileConfigModel> = await res.json()
+            console.log(666, data)
+            fileConfigs.push(data.res)
+            
+        }
+    }
+    return fileConfigs
+}
 
+const NotePreview = async({data, medias}: {data: string, medias?: string[]}) => {
+    // console.log('preivew medias: ', medias)
+    
+    const fileList = await getMediaDetails(medias || [])
+    console.log(fileList)
     const parseData = ()=> {
         if(!data) return
         const arr = data.split('\n')
         const elements: React.JSX.Element[] = []
         for (let ind = 0; ind < arr.length; ind++) {
-            const a = arr[ind]
+            let a = arr[ind]
             let goNext = false
             if(a){
                 // header
@@ -51,6 +74,25 @@ const NotePreview = ({data}: {data: string}) => {
                         continue
                     }
                 }
+                // image
+                const pattern = /!\[(.*?)\]\((.*?)\)/mg
+                let matcher
+                while((matcher= pattern.exec(a)) !== null) {
+                    a = a.replaceAll(matcher[0], '')
+                    const title = matcher[1]
+                    const fileName = matcher[2]
+                    const folder = getFileDomain()
+                    const fc = fileList.find(f => f.content.includes(fileName))
+                    elements.push(<Group justify={fc?.display || 'start'}>
+                        <Stack gap={2}>
+                            <Image w={'auto'} h={'6rem'} fit='contain' src={folder + '/' + fileName}/>
+                            <Text ta={'center'} size='10px' c={'#3279b7'}>{fc?.title}</Text>
+                        </Stack>
+                        
+                    </Group>)
+                    
+                    
+                }
                 // common text
                 const hlArr = checkKeyCharacter(a)
                 if(hlArr.length){
@@ -67,9 +109,11 @@ const NotePreview = ({data}: {data: string}) => {
         }
         return elements
     }
+
     const result = parseData()
   return (
     <div className={classes.container}>
+        {fileList.length}
         {result}
     </div>
   )
