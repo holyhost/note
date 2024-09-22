@@ -27,7 +27,6 @@ export async function POST(params:Request) {
     bean.tags = body.tags || ''
     bean.type = body.type || 1
     const medias = body.medias || []
-    console.log(medias)
     medias.length && (bean.medias = medias)
     const result = await bean.save()
     revalidateTag('note')
