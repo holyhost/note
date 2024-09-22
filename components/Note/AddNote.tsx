@@ -306,7 +306,7 @@ const AddNote = () => {
         <Group justify="end">
            <Button loading={uploading} mt={'1rem'} onClick={submit} bg={'teal'}>Save</Button> 
         </Group>
-        <NotePreview data={content}/>
+        {/* <NotePreview data={content}/> */}
         
     </Container>
   )
