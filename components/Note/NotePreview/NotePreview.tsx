@@ -29,7 +29,6 @@ async function getMediaDetails(ids:string[]) {
             console.log(id, 'will get file detail')
             const res = await fetch(domain + "/api/file/"+id)
             const data: ResType<FileConfigModel> = await res.json()
-            console.log(666, data)
             fileConfigs.push(data.res)
             
         }
