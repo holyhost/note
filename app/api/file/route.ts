@@ -46,7 +46,6 @@ export async function POST(request: NextRequest) {
         mkdirSync(uploadFolder)
     }
     const path = uploadFolder + `/${fileName}`
-    console.log('filepath:', path)
     await writeFile(path, buffer)
     console.log(`open ${fileName} to see the uploaded file`)
     const bean = new FileConfig()
@@ -77,21 +76,19 @@ export async function PUT(request: NextRequest) {
     const utime = new Date()
     const state: any = {}
     state['utime'] = utime
+    // fid && (state['_id'] = fid)
     display && (state['display'] = display)
     tags && (state['tags'] = tags)
     view && (state['view'] = view)
     heart && (state['heart'] = heart)
     title && (state['title'] = title)
-    
     try {
         if(fid){
             const conn = await connectDB()
             if(!conn) return Response.json({ok: false})
-            const result = FileConfig.findByIdAndUpdate(fid,state)
-            console.log(result)
+            const result = await FileConfig.findByIdAndUpdate(fid,state)
             return NextResponse.json({ ok: true, res: result})
         }
-
         return NextResponse.json({ ok: false})
     } catch (error) {
         return NextResponse.json({ ok: false})
@@ -103,19 +100,16 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
     const data = await request.json()
     const fid = data._id || ''
-    console.log(fid)
     try {
         if(fid){
             const conn = await connectDB()
             if(!conn) return Response.json({ok: false})
             const result = await FileConfig.findById(fid)
-            console.log(result)
             if(result){
                 const fileName = result.content
                 await FileConfig.findByIdAndDelete(fid)
                 const filepath = process.cwd() + '/public/' + (process.env.FILE_UPLOAD_FOLDER || 'files') + "/" + fileName
                 if(existsSync(filepath)) {
-                    console.log(filepath)
                     unlinkSync(filepath)
                 }
             }
