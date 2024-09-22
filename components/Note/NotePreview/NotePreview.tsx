@@ -47,7 +47,6 @@ const NotePreview = ({data}: {data: string}) => {
                     if(nextInd){
                         const codes = arr.slice(ind+1, nextInd)
                         ind = nextInd
-                        console.log(codes.length)
                         elements.push(<Code key={'cc-' + ind} codes={codes} name={"cd-" + ind}/>)
                         continue
                     }
