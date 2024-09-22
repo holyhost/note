@@ -3,6 +3,11 @@ export function getDomain() {
     return process.env.PUBLIC_APP_URL || "http://localhost:3000"
 }
 
+export function getFileDomain() {
+    const folder = process.env.FILE_UPLOAD_FOLDER || 'files'
+    return (process.env.PUBLIC_APP_URL || "http://localhost:3000") + "/" + folder
+}
+
 
 export interface BaseType {
     label: string,
