@@ -10,7 +10,7 @@ export default async function HomePage() {
   return (
     <>
       <Welcome />
-      {files.length && files.map(item => (<Text>{item._id}</Text>))}
+      {files.length && files.map(item => (<Text>{item._id}-{item.title}-{item.display}</Text>))}
     </>
   );
 }

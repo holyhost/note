@@ -6,6 +6,7 @@ import React from 'react'
 import classes from './NoteDetail.module.css'
 import { Metadata } from 'next'
 import NotePreview from '@/components/Note/NotePreview/NotePreview'
+import { FileConfigModel } from '@/utils/model/FileConfig'
 
 
 
@@ -74,10 +75,10 @@ const DetailPage = async ({params}: {params: {id: string}}) => {
           </Group>
           {note.tags && (
             <Group justify='end'>
-              {note.tags.split(',').map(t => <Pill c='white' bg={'teal'} size='sm'>{t}</Pill>)}
+              {note.tags.split(',').map((t, ind) => <Pill c='white' key={t+ind+'-pill'} bg={'teal'} size='sm'>{t}</Pill>)}
             </Group>
           )}
-          <NotePreview data={note.content}/>
+          <NotePreview data={note.content} medias={note.medias as any as string[]} />
         </div>
       ) : (
         <Center>
