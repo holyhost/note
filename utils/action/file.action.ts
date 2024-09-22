@@ -1,3 +1,4 @@
+import { getDomain } from "../base"
 import { FileConfigModel } from "../model/FileConfig"
 import { ResType } from "../model/global"
 
@@ -24,9 +25,10 @@ export const uploadFileAction = async (file: File, title = '', display = '', tag
         return null
     }
 }
-export const updateFileAction = async (title = '', display = '', tags = '', view =0, heart=0) => {
-
+export const updateFileAction = async (id: string | null, title = '', display = '', tags = '', view =0, heart=0) => {
+    if(!id) return null
     const form = new FormData()
+    form.set('_id', id)
     title && form.set('title', title)
     display && form.set('display', display)
     tags && form.set('tags', tags)
@@ -47,4 +49,13 @@ export const updateFileAction = async (title = '', display = '', tags = '', view
         console.log(error)
         return null
     }
+}
+
+export const getFileListAction = async()=>{
+    const res = await fetch(getDomain() + '/api/file')
+    const jsonData = await res.json()
+    if(jsonData.ok){
+        return jsonData.res
+    }
+    return []
 }
