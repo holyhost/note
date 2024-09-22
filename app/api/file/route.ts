@@ -3,7 +3,20 @@ import { NextRequest, NextResponse } from 'next/server'
 import { randomUUID } from 'crypto'
 import { connectDB } from '@/utils/db'
 import FileConfig from '@/utils/model/FileConfig'
-import { stat } from 'fs'
+import { existsSync, mkdirSync, stat, unlinkSync } from 'fs'
+
+
+
+export async function GET(request: NextRequest) {
+    const conn = await connectDB()
+    if(!conn) return Response.json({ok: false})
+    const result = await FileConfig.find({})
+    const data = {
+        ok: true,
+        res: result.map(item => ({...item._doc}))
+    }
+    return Response.json(data)
+}
 
 export async function POST(request: NextRequest) {
     const data = await request.formData()
@@ -25,9 +38,14 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(bytes)
     // With the file data in the buffer, you can do whatever you want with it.
     // For this, we'll just write it to the filesystem in a new location
-    const parentPath = process.env.FILE_UPLOAD_FOLDER || 'file-folder'
+    const parentPath = process.env.FILE_UPLOAD_FOLDER || 'files'
     const cwd = process.cwd()
-    const path = `${cwd}/public/${parentPath}/${fileName}`
+    const uploadFolder = `${cwd}/public/${parentPath}`
+    // create files folder if not exist
+    if(!existsSync(uploadFolder)) {
+        mkdirSync(uploadFolder)
+    }
+    const path = uploadFolder + `/${fileName}`
     console.log('filepath:', path)
     await writeFile(path, buffer)
     console.log(`open ${fileName} to see the uploaded file`)
@@ -67,8 +85,41 @@ export async function PUT(request: NextRequest) {
     
     try {
         if(fid){
+            const conn = await connectDB()
+            if(!conn) return Response.json({ok: false})
             const result = FileConfig.findByIdAndUpdate(fid,state)
             console.log(result)
+            return NextResponse.json({ ok: true, res: result})
+        }
+
+        return NextResponse.json({ ok: false})
+    } catch (error) {
+        return NextResponse.json({ ok: false})
+    }
+
+}
+
+
+export async function DELETE(request: NextRequest) {
+    const data = await request.json()
+    const fid = data._id || ''
+    console.log(fid)
+    try {
+        if(fid){
+            const conn = await connectDB()
+            if(!conn) return Response.json({ok: false})
+            const result = await FileConfig.findById(fid)
+            console.log(result)
+            if(result){
+                const fileName = result.content
+                await FileConfig.findByIdAndDelete(fid)
+                const filepath = process.cwd() + '/public/' + (process.env.FILE_UPLOAD_FOLDER || 'files') + "/" + fileName
+                if(existsSync(filepath)) {
+                    console.log(filepath)
+                    unlinkSync(filepath)
+                }
+            }
+            
             return NextResponse.json({ ok: true, res: result})
         }
 
