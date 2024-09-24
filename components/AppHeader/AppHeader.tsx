@@ -4,7 +4,7 @@ import classes from './AppHeader.module.css'
 import { Avatar, Text, Container, Group, Title, Burger, Menu, MenuLabel, rem, useMantineColorScheme } from '@mantine/core'
 import { IconHome, IconPencil, IconPlus, IconAlertCircle, IconPhoto, IconLighter, IconSun, IconSunFilled, IconMoon } from '@tabler/icons-react'
 import { useDisclosure } from '@mantine/hooks';
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 const links = [
   { link: '/', label: '主页' },
@@ -15,15 +15,16 @@ const links = [
 
 const AppHeader = () => {
   const [opened, { toggle }] = useDisclosure(false);
-  const [active, setActive] = useState(links[0].link);
   const router = useRouter()
+  const pathName = usePathname()
+  const [active, setActive] = useState(pathName);
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const items = links.map((link) => (
     <a
       key={link.label}
       href={link.link}
       className={classes.link}
-      data-active={active === link.link || undefined}
+      data-active={active === link.link || (active.includes(link.link) && !active.includes('/note/add') && link.link.includes('/note')) || undefined}
       onClick={(event) => {
         event.preventDefault();
         setActive(link.link);
