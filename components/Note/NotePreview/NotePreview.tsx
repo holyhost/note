@@ -40,7 +40,6 @@ const NotePreview = async({data, medias}: {data: string, medias?: string[]}) => 
     // console.log('preivew medias: ', medias)
     
     const fileList = await getMediaDetails(medias || [])
-    console.log(fileList)
     const parseData = ()=> {
         if(!data) return
         const arr = data.split('\n')
