@@ -1,4 +1,4 @@
-import { Group, Image, Stack, Text } from '@mantine/core'
+import { Anchor, Group, Image, Stack, Text } from '@mantine/core'
 import React from 'react'
 import classes from './NotePreview.module.css'
 import Code from './Code/Code'
@@ -26,7 +26,6 @@ async function getMediaDetails(ids:string[]) {
     if(ids && ids.length){
         for (let index = 0; index < ids.length; index++) {
             const id = ids[index];
-            console.log(id, 'will get file detail')
             const res = await fetch(domain + "/api/file/"+id)
             const data: ResType<FileConfigModel> = await res.json()
             fileConfigs.push(data.res)
@@ -37,7 +36,6 @@ async function getMediaDetails(ids:string[]) {
 }
 
 const NotePreview = async({data, medias}: {data: string, medias?: string[]}) => {
-    // console.log('preivew medias: ', medias)
     
     const fileList = await getMediaDetails(medias || [])
     const parseData = ()=> {
@@ -84,18 +82,19 @@ const NotePreview = async({data, medias}: {data: string, medias?: string[]}) => 
                     elements.push(<Group justify={fc?.display || 'start'}>
                         <Stack gap={2}>
                             <Image w={'auto'} h={'6rem'} fit='contain' src={folder + '/' + fileName}/>
-                            <Text ta={'center'} size='10px' c={'#3279b7'}>{fc?.title}</Text>
+                            <Text ta={'center'} size='10px' c={'#3279b7'}>{title}</Text>
                         </Stack>
                         
                     </Group>)
                     
                     
                 }
+                
                 // common text
                 const hlArr = checkKeyCharacter(a)
                 if(hlArr.length){
                     elements.push(
-                        <Text c={'grape'} key={'txt-default-' + ind} className={classes.txtPre}>{hlArr.map(hl => hl)}</Text>
+                        <Text key={'txt-default-' + ind} className={classes.txtPre}>{hlArr.map(hl => hl)}</Text>
                     )
                 }else{
                     elements.push(<Text key={'txt-default-' + ind} className={classes.txtPre}>{a}</Text>)
@@ -111,7 +110,6 @@ const NotePreview = async({data, medias}: {data: string, medias?: string[]}) => 
     const result = parseData()
   return (
     <div className={classes.container}>
-        {fileList.length}
         {result}
     </div>
   )
@@ -129,23 +127,50 @@ function getNextIndex (cur: number, arr: string[]): number{
 }
 
 function checkKeyCharacter(str: string){
-    const keyIndex = str.indexOf(MD_HIGHT_LIGHT)
-    let result: React.JSX.Element[] = []
-    if(keyIndex !== -1){
-        const arr = str.split(MD_HIGHT_LIGHT)
-        if(arr.length > 2){
-            for (let i = 0; i < arr.length; i++) {
-                const item = arr[i];
-                if(i % 2 === 0){
-                    result.push(<Text component='span' className={classes.textPre}>{item}</Text>)
-                }else if(i + 1 === arr.length){
-                    result.push(<Text component='span' className={classes.textPre}>=={item}</Text>)
-                } else{
-                    result.push(<Text component='span' bg={'yellow'} className={classes.textPre}>{item}</Text>)
-                }
-            }
-        }
+    const elementArr: {
+        type: 'str' | 'ele',
+        value: string | React.ReactNode
+    }[] = []
+    // link [name](https://zxyoyo.com/about.html)
+    let matcher
+    const linkPattern = /\[(.*?)\]\((.*?)\)/mg
+    while((matcher= linkPattern.exec(str)) !== null) {
+        const title = matcher[1]
+        const link = matcher[2]
+        const tempArr = str.split(matcher[0])
+        elementArr.push({type: 'str', value: tempArr[0]})
+        elementArr.push({type: 'ele', value: <Anchor href={link} underline='hover' target='_blank'>{title}</Anchor>})
+        // avoid tempArr length is not equal 2
+        str = str.slice(tempArr[0].length + matcher[0].length)
     }
+    elementArr.push({type: 'str', value: str})
+    // hilight ==Hello World==
+    const elementArr2:{
+        type: 'str' | 'ele',
+        value: string | React.ReactNode
+    }[] = []
+    const hightLightPattern = /==(.*?)==/
+    matcher = null
+    for (let index = 0; index < elementArr.length; index++) {
+        const element = elementArr[index];
+        const type = element.type
+        let value = element.value
+        if(type === 'str' && value){
+            while((matcher= hightLightPattern.exec(value as string)) !== null) {
+                const title = matcher[1]
+                const tempArr = (value as string).split(matcher[0])
+                elementArr2.push({type: 'str', value: tempArr[0]})
+                elementArr2.push({type: 'ele', value: (<Text component='span' bg={'yellow'} className={classes.textPre}>{title}</Text>)})
+                // avoid tempArr length is not equal 2
+                value = (value as string).slice(tempArr[0].length + matcher[0].length)
+            }
+            elementArr2.push({type: 'str', value})
+        }else{
+            elementArr2.push({type, value})
+        }
+        
+    }
+    const result = elementArr2.map(item => item.type === 'str' ? <Text component='span' className={classes.textPre}>{item.value}</Text> : item.value)
     return result
 
 }
