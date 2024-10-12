@@ -90,7 +90,7 @@ const NotePreview = async({data, medias}: {data: string, medias?: string[]}) => 
                     
                 }
                 
-                // common text
+                // common one row text
                 const hlArr = checkKeyCharacter(a)
                 if(hlArr.length){
                     elements.push(
