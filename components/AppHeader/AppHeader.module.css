@@ -1,4 +1,10 @@
 .header {
+  /* fixed header */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+    /* fixed header ---end */
     height: rem(56px);
     /* margin-bottom: rem(70px); */
     background-color: var(--mantine-color-body);
@@ -35,3 +41,16 @@
       font-style: italic;
     }
   }
+
+.myavatar {
+  top: 15px;
+  position: absolute !important;
+  border: 1px solid teal;
+  width: 60px !important;
+  height: 60px !important;
+
+}
+
+.myavatar:hover{
+  box-shadow: 2px 2px 2px rgb(2, 157, 157);
+}

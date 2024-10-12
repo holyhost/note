@@ -37,8 +37,8 @@ const AppHeader = () => {
   return (
     <header className={classes.header} >
         <Container className={classes.inner}>
-            <Avatar src={'/avatar.png'}/>
-            <Title fw={900} fs={'italic'} lts={4} ff={'cursive'}>小石潭
+            <Avatar className={classes.myavatar + ' myhover'} src={'/avatar.png'}/>
+            <Title className='myhover' ml={'60px'} fw={900} fs={'italic'} lts={4} ff={'cursive'}>小石潭
               <Text inherit variant="gradient" fs={'34px'} component="span" gradient={{ from: 'pink', to: 'yellow' }}>
                 记
               </Text>
