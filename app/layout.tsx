@@ -26,7 +26,10 @@ export default function RootLayout({ children }: { children: any }) {
       <body>
         <MantineProvider theme={theme}>
           <AppHeader/>
-          {children}</MantineProvider>
+          <div style={{marginTop: '80px'}}>
+            {children}   
+          </div>
+        </MantineProvider>
       </body>
     </html>
   );
