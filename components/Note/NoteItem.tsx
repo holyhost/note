@@ -1,17 +1,44 @@
 
 import React from 'react'
 import classes from './item.module.css'
-import { Anchor, Group, Text } from '@mantine/core'
-import { IconAlertCircle, IconCalendar, IconEye, IconFish } from '@tabler/icons-react'
+import { Anchor, Group, Menu, Text } from '@mantine/core'
+import { IconAlertCircle, IconCalendar, IconDetails, IconDots, IconDotsVertical, IconEdit, IconEye, IconFish, IconGrowth, IconLeaf, IconPlant, IconSeeding, IconTrash } from '@tabler/icons-react'
 import { NoteModel } from '@/utils/model/Note'
 
-const NoteItem = ({data}: {data: NoteModel}) => {
+type PropType = {
+  data: NoteModel,
+  onDelete?: (id: string)=> void
+}
+
+const NoteItem = ({data, onDelete}: PropType) => {
   data.utime = new Date(data.utime + '')
   const updateTime = data.utime?.toLocaleDateString() || ''
   // const updateTime = ''
   return (
     <div className={classes.container}>
         <div className={classes.anchor}><IconFish/></div>
+        <div className={classes.moreAction + ' myhover'}>
+        <Menu shadow="md" width={120} trigger="hover" openDelay={100} closeDelay={300}>
+          <Menu.Target>
+            <IconSeeding/>
+          </Menu.Target>
+          <Menu.Dropdown>
+            {/* <Menu.Label>Application</Menu.Label> */}
+            <Menu.Item leftSection={<IconDetails size={14} />}>
+              详情
+            </Menu.Item>
+            <Menu.Item leftSection={<IconEdit size={14}/>}>
+              编辑
+            </Menu.Item>
+            <Menu.Item c={'red'}
+              leftSection={<IconTrash size={14}/>}
+              onClick={()=> data._id && onDelete !== undefined && onDelete(data._id)}>
+              删除
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
+          
+        </div>
         <Text size='lg' fw={700} ff={'fangsong'} fs={'italic'}>{data.title}</Text>
         <div className={classes.content}>
             {data.content}

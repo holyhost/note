@@ -20,3 +20,21 @@ export const getNoteList = async (page=1, count=6)=> {
     }
     
 }
+
+export async function deleteNote(id: string) {
+    try {
+        const url = getDomain()
+        const data = await fetch(url + '/api/note/' + id, {
+            method: 'DELETE',
+            next: {tags: ['note']}})
+        const j = await data.json()
+        if(j.ok){
+            return true
+        }
+        return false
+    } catch (error) {
+        console.log(error)
+        throw new Error(`An error happened: ${error}`)
+    }
+    
+}
