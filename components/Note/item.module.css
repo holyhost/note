@@ -25,6 +25,17 @@
     border-radius: 3rem;
     color: #82c91e;
 }
+.moreAction {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    width: 3rem;
+    top: 1px;
+    right: 0;
+    color: #82c91e;
+}
 
 .title {
     font-size: 24px;
