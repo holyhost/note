@@ -11,3 +11,6 @@
     transition-duration: 0.6s;
 }
 
+.pointer{
+    cursor: pointer;
+}
