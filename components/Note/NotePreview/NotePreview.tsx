@@ -170,7 +170,7 @@ function checkKeyCharacter(str: string){
         }
         
     }
-    const result = elementArr2.map(item => item.type === 'str' ? <Text component='span' className={classes.textPre}>{item.value}</Text> : item.value)
+    const result = elementArr2.map((item, index) => item.type === 'str' ? <Text component='span' key={'span-' + index} className={classes.textPre}>{item.value}</Text> : item.value)
     return result
 
 }
