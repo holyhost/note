@@ -6,6 +6,7 @@ import { theme } from '../theme';
 import '@/styles/global.css'
 import { Welcome } from '@/components/Welcome/Welcome';
 import AppHeader from '@/components/AppHeader/AppHeader';
+import Go2Top from '@/components/Go2Top/Go2Top';
 
 export const metadata = {
   title: 'Note',
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: any }) {
           <div style={{marginTop: '80px'}}>
             {children}   
           </div>
+          <Go2Top/>
         </MantineProvider>
       </body>
     </html>
