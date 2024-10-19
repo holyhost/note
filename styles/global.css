@@ -1,14 +1,15 @@
 
 .bodyBg {
-    /* background-color: aliceblue; */
-    width: 99vw;
+    background-color: #61a9a9;
+    width: 100vw;
     height: 100vh;
-    background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c);
+    /* background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c); */
     background-image: url('/bg-1.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center 0;
     background-attachment: fixed;
+    overflow-x: hidden;
 }
 
 .bg-dark {
