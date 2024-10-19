@@ -7,7 +7,6 @@ import { IconImageInPicture, IconRefresh, IconTrashX } from '@tabler/icons-react
 import { FileConfigModel } from '@/utils/model/FileConfig'
 import { nanoid } from 'nanoid'
 import { updateFileAction, uploadFileAction } from '@/utils/action/file.action'
-import { useColorScheme } from '@mantine/hooks'
 
 const AddNote = () => {
     const [title, setTitle] = useState('')
@@ -20,7 +19,6 @@ const AddNote = () => {
     const [editMediaTitle, setEditMediaTitle] = useState(false)
     const [noteType, setNoteType] = useState(NOTE_TYPES[0].label)
     const {colorScheme} = useMantineColorScheme()
-    console.log(colorScheme)
     const filePathFolder = getFileDomain()
     const noteTypes = NOTE_TYPES.map(item => item.label)
     const chooseFile = async(file: File | null) => {
