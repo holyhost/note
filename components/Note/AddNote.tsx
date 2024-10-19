@@ -1,12 +1,13 @@
 "use client"
 import { FILE_DISPLAY_TYPES, getDomain, getFileDomain, NOTE_TAGS, NOTE_TYPES } from '@/utils/base'
-import { Button, Chip, Container, FileButton, Group, Input, MultiSelect, Pill, Radio, Select, TagsInput, Text, Textarea, TextInput, Tooltip } from '@mantine/core'
+import { Button, Chip, Container, FileButton, Group, Input, MultiSelect, Pill, Radio, Select, TagsInput, Text, Textarea, TextInput, Tooltip, useMantineColorScheme } from '@mantine/core'
 import React, { useState } from 'react'
 import NotePreview from './NotePreview/NotePreview'
 import { IconImageInPicture, IconRefresh, IconTrashX } from '@tabler/icons-react'
 import { FileConfigModel } from '@/utils/model/FileConfig'
 import { nanoid } from 'nanoid'
 import { updateFileAction, uploadFileAction } from '@/utils/action/file.action'
+import { useColorScheme } from '@mantine/hooks'
 
 const AddNote = () => {
     const [title, setTitle] = useState('')
@@ -18,6 +19,8 @@ const AddNote = () => {
     const [uploading, setUploading] = useState(false)
     const [editMediaTitle, setEditMediaTitle] = useState(false)
     const [noteType, setNoteType] = useState(NOTE_TYPES[0].label)
+    const {colorScheme} = useMantineColorScheme()
+    console.log(colorScheme)
     const filePathFolder = getFileDomain()
     const noteTypes = NOTE_TYPES.map(item => item.label)
     const chooseFile = async(file: File | null) => {
@@ -195,7 +198,7 @@ const AddNote = () => {
         
     }
   return (
-    <Container mt={'md'}>
+    <Container mt={'md'} className={colorScheme === 'light' ? 'bg-light container' : 'bg-dark container'}>
         <TextInput
             label='笔记标题'
             value={title} 

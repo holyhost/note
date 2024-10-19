@@ -7,15 +7,16 @@ import { NoteModel } from '@/utils/model/Note'
 
 type PropType = {
   data: NoteModel,
+  theme?: string,
   onDelete?: (id: string)=> void
 }
 
-const NoteItem = ({data, onDelete}: PropType) => {
+const NoteItem = ({data, theme, onDelete}: PropType) => {
   data.utime = new Date(data.utime + '')
   const updateTime = data.utime?.toLocaleDateString() || ''
   // const updateTime = ''
   return (
-    <div className={classes.container}>
+    <div className={classes.container + (theme === 'dark' ? ' bg-dark' : '')}>
         <div className={classes.anchor}><IconFish/></div>
         <div className={classes.moreAction + ' myhover'}>
         <Menu shadow="md" width={120} trigger="hover" openDelay={100} closeDelay={300}>
@@ -25,10 +26,14 @@ const NoteItem = ({data, onDelete}: PropType) => {
           <Menu.Dropdown>
             {/* <Menu.Label>Application</Menu.Label> */}
             <Menu.Item leftSection={<IconDetails size={14} />}>
-              详情
+              <Anchor href={'/note/' + data._id} underline="hover">
+                详情
+              </Anchor>
             </Menu.Item>
-            <Menu.Item leftSection={<IconEdit size={14}/>}>
-              编辑
+            <Menu.Item leftSection={<IconEdit size={14} />}>
+              <Anchor href={'/note/edit/' + data._id} underline="hover">
+                编辑
+              </Anchor>
             </Menu.Item>
             <Menu.Item c={'red'}
               leftSection={<IconTrash size={14}/>}

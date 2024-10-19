@@ -1,4 +1,28 @@
 
+.bodyBg {
+    /* background-color: aliceblue; */
+    width: 99vw;
+    height: 100vh;
+    background: linear-gradient(0.25turn, #3f87a6, #ebf8e1, #f69d3c);
+    background-image: url('/bg-1.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center 0;
+    background-attachment: fixed;
+}
+
+.bg-dark {
+    background: rgb(21 33 22 / 88%) !important;
+}
+.bg-light {
+    background: rgb(192 213 194 / 88%) !important;
+}
+
+.container {
+    padding: 10px 8px;
+    border-radius: 6px;
+}
+
 .bdr-20 {
     border-radius: 20px;
 }

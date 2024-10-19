@@ -35,7 +35,7 @@ const AppHeader = () => {
     </a>
   ))
   return (
-    <header className={classes.header} >
+    <header className={classes.header} style={{backgroundColor: colorScheme === 'light' ? '#b5b5eb' : ''}}>
         <Container className={classes.inner}>
             <Avatar className={classes.myavatar + ' myhover'} src={'/avatar.png'}/>
             <Title 
