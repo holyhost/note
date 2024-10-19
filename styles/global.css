@@ -38,3 +38,7 @@
 .pointer{
     cursor: pointer;
 }
+
+p{
+    margin: 2px 0;
+}
