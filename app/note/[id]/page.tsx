@@ -7,6 +7,7 @@ import classes from './NoteDetail.module.css'
 import { Metadata } from 'next'
 import NotePreview from '@/components/Note/NotePreview/NotePreview'
 import { FileConfigModel } from '@/utils/model/FileConfig'
+import { getNoteDetail } from '@/utils/action/note.action'
 
 
 
@@ -45,15 +46,6 @@ export async function generateStaticParams() {
   return ids
 }
 
-const getNoteDetail = async (id: string) => {
-  const domain = getDomain()
-  const data: ResType<NoteModel> = await fetch(domain + "/api/note/"+id).then((res) => res.json())
-  if(data.ok && data.res){
-    return data.res
-  }else{
-    return null
-  }
-}
 
 const DetailPage = async ({params}: {params: {id: string}}) => {
     const note = await getNoteDetail(params.id)

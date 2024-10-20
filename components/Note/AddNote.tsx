@@ -8,16 +8,26 @@ import { FileConfigModel } from '@/utils/model/FileConfig'
 import { nanoid } from 'nanoid'
 import { updateFileAction, uploadFileAction } from '@/utils/action/file.action'
 
-const AddNote = () => {
-    const [title, setTitle] = useState('')
-    const [content, setContent] = useState('')
+type PropsType = {
+    id?: string,
+    title?: string,
+    content?: string,
+    tags?: string[],
+    medias?: FileConfigModel[],
+    noteType?: string
+
+}
+
+const AddNote = (detail?: PropsType) => {
+    const [title, setTitle] = useState(detail?.title || '')
+    const [content, setContent] = useState(detail?.content || '')
     const [selectedIndex, setSelectedIndex] = useState(-1)
     const [lastCursorIndex, setLastCursorIndex] = useState(0)
-    const [tags, setTags] = useState<string[]>([])
-    const [medias, setMedias] = useState<FileConfigModel[]>([])
+    const [tags, setTags] = useState<string[]>(detail?.tags || [])
+    const [medias, setMedias] = useState<FileConfigModel[]>(detail?.medias || [])
     const [uploading, setUploading] = useState(false)
     const [editMediaTitle, setEditMediaTitle] = useState(false)
-    const [noteType, setNoteType] = useState(NOTE_TYPES[0].label)
+    const [noteType, setNoteType] = useState(detail?.noteType || NOTE_TYPES[0].label)
     const {colorScheme} = useMantineColorScheme()
     const filePathFolder = getFileDomain()
     const noteTypes = NOTE_TYPES.map(item => item.label)
@@ -168,9 +178,13 @@ const AddNote = () => {
         }
         setUploading(true)
         try {
-            const res = await fetch("/api/note", {
-                method: 'POST',
+            const id = detail?.id
+            const url = id ? `/api/note/${id}` : '/api/note'
+            const method = id ? 'PUT' : 'POST'
+            const res = await fetch(url, {
+                method,
                 body: JSON.stringify({
+                    id,
                     title, content, 
                     tags: tags.join(','), 
                     type: NOTE_TYPES.find(item => item.label === noteType)?.value || 1,
@@ -179,15 +193,17 @@ const AddNote = () => {
             })
             const json = await res.json()
             if(json.ok){
+                if(id) return
                 setTitle('')
                 setContent('')
+                medias.length && medias.map(async m => {
+                    const res = await updateFileAction(m._id || '', m.title, m.display, 'note')
+                    if(res) return 1
+                    return 0
+                })
+                setMedias([])
             }
-            medias.length && medias.map(async m => {
-                const res = await updateFileAction(m._id || '', m.title, m.display, 'note')
-                if(res) return 1
-                return 0
-            })
-            setMedias([])
+            
         } catch (error) {
             console.log(error)
         }finally{
@@ -305,7 +321,7 @@ const AddNote = () => {
         </Group>}
         
         <Group justify="end">
-           <Button loading={uploading} mt={'1rem'} onClick={submit} bg={'teal'}>Save</Button> 
+           <Button loading={uploading} mt={'1rem'} onClick={submit} bg={'teal'}>保存</Button> 
         </Group>
         {/* <NotePreview data={content}/> */}
         
