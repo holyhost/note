@@ -59,3 +59,19 @@ export const getFileListAction = async()=>{
     }
     return []
 }
+
+
+export async function getMediaDetails(ids:string[]) {
+    const fileConfigs: FileConfigModel[] = []
+    const domain = getDomain()
+    if(ids && ids.length){
+        for (let index = 0; index < ids.length; index++) {
+            const id = ids[index];
+            const res = await fetch(domain + "/api/file/"+id)
+            const data: ResType<FileConfigModel> = await res.json()
+            fileConfigs.push(data.res)
+            
+        }
+    }
+    return fileConfigs
+}

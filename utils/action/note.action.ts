@@ -38,3 +38,14 @@ export async function deleteNote(id: string) {
     }
     
 }
+
+
+export async function getNoteDetail (id: string) {
+    const domain = getDomain()
+    const data: ResType<NoteModel> = await fetch(domain + "/api/note/"+id).then((res) => res.json())
+    if(data.ok && data.res){
+      return data.res
+    }else{
+      return null
+    }
+  }

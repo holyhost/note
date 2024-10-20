@@ -5,6 +5,7 @@ import Code from './Code/Code'
 import { getDomain, getFileDomain } from '@/utils/base'
 import { FileConfigModel } from '@/utils/model/FileConfig'
 import { ResType } from '@/utils/model/global'
+import { getMediaDetails } from '@/utils/action/file.action'
 
 const MD_H1 = '# '
 const MD_H2 = '## '
@@ -20,20 +21,7 @@ const MD_TYPES = [MD_CODE, MD_H1, MD_H2, MD_H3, MD_H4, MD_HIGHT_LIGHT, MD_BOLD, 
 const MD_ROW_TYPES = [MD_HIGHT_LIGHT]
 const whiteEle = <div className={classes.ht1}></div>
 
-async function getMediaDetails(ids:string[]) {
-    const fileConfigs: FileConfigModel[] = []
-    const domain = getDomain()
-    if(ids && ids.length){
-        for (let index = 0; index < ids.length; index++) {
-            const id = ids[index];
-            const res = await fetch(domain + "/api/file/"+id)
-            const data: ResType<FileConfigModel> = await res.json()
-            fileConfigs.push(data.res)
-            
-        }
-    }
-    return fileConfigs
-}
+
 
 const NotePreview = async({data, medias}: {data: string, medias?: string[]}) => {
     
