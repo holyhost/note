@@ -51,7 +51,7 @@ const NotePreview = async({data, medias}: {data: string, medias?: string[]}) => 
                     const mdh = MD_HEADERS[index];
                     if(a.startsWith(mdh)){
                         const content = a.replace(mdh, '')
-                        const ele =  <Text lh={36 - index * 2 + 'px'} fw={900} size={28 - index * 2 + 'px'} key={'header-' + ind} className={classes.txtPre}>{content}</Text>
+                        const ele =  <Text lh={36 - index * 2 + 'px'} fw={900} size={28 - index * 2 + 'px'} c={'dark'} key={'header-' + ind} className={classes.txtPre}>{content}</Text>
                         elements.push(ele)
                         goNext = true
                         continue
